@@ -1,6 +1,40 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
 
 export const Register = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegistrationSuccess = (token: string) => {
+    // Store the token in local storage
+    localStorage.setItem("token", token);
+
+    navigate("/login");
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/register", formData);
+      const token = response.data.token;
+
+      // Call the function to handle registration success
+      handleRegistrationSuccess(token);
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  };
+
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
@@ -20,12 +54,14 @@ export const Register = () => {
             </p>
           </div>
         </div>
-        <form onSubmit={(e) => e.preventDefault()} className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
             <label className="font-medium">Name</label>
             <input
               type="text"
               required
+              onChange={handleInputChange}
+              name="name"
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
             />
           </div>
@@ -34,6 +70,8 @@ export const Register = () => {
             <input
               type="email"
               required
+              onChange={handleInputChange}
+              name="email"
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
             />
           </div>
@@ -42,6 +80,8 @@ export const Register = () => {
             <input
               type="password"
               required
+              onChange={handleInputChange}
+              name="password"
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
             />
           </div>
@@ -51,6 +91,8 @@ export const Register = () => {
             <input
               type="password"
               required
+              onChange={handleInputChange}
+              name="password_confirmation"
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
             />
           </div>
