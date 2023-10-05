@@ -1,3 +1,9 @@
+import { Courses } from "../components/Courses";
+
 export const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <Courses />
+    </div>
+  );
 };

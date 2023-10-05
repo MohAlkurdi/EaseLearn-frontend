@@ -36,7 +36,7 @@ export const Courses = () => {
 
         <div className="grid grid-cols-1 gap-6 mt-8 sm:mt-12 xl:mt-20 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-14">
           {courses.map((course: Course) => (
-            <Link to={`/courses/${course.slug}`} key={course.id}>
+            <Link to={`/courses/${course.id}`} key={course.id}>
               <div className="bg-white transform transition duration-500 hover:scale-110">
                 <div className="py-8 px-9">
                   <p className="text-lg font-bold text-black">{course.title}</p>

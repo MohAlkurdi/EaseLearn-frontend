@@ -5,6 +5,8 @@ import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
+import { CourseDetail } from "./components/CourseDetail";
+import { Auth } from "./components/Auth";
 function App() {
   return (
     <BrowserRouter>
@@ -13,7 +15,23 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Protected routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <Auth>
+                <Dashboard />
+              </Auth>
+            }
+          />
+          <Route
+            path="/courses/:courseId"
+            element={
+              <Auth>
+                <CourseDetail />
+              </Auth>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
