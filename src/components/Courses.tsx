@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,8 @@ interface Course {
 
 export const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const userIsAuthenticated = !!localStorage.getItem("ACCESS_TOKEN"); // Check if the token exists in localStorage
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -25,6 +27,27 @@ export const Courses = () => {
     fetchCourses();
   }, []);
 
+  const enrollInCourse = async (courseId: number) => {
+    try {
+      // Check if the user is authenticated
+      if (userIsAuthenticated) {
+        // Send a POST request to enroll in the course
+        const response = await api.post(`/courses/${courseId}/enroll`);
+        // You can also update the state or show a success message to the user
+        console.log(
+          "You have successfully enrolled in the course.",
+          response.data.message
+        );
+      } else {
+        console.log(
+          "Use must be authenticated to enroll in a course. Please log in."
+        );
+      }
+    } catch (error) {
+      alert("You're Already enrolled in this course");
+    }
+  };
+
   return (
     <section className="py-10 bg-gradient-to-r from-fuchsia-600 to-blue-600 sm:py-16 lg:py-24">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
@@ -36,7 +59,7 @@ export const Courses = () => {
 
         <div className="grid grid-cols-1 gap-6 mt-8 sm:mt-12 xl:mt-20 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-14">
           {courses.map((course: Course) => (
-            <Link to={`/courses/${course.id}`} key={course.id}>
+            <div key={course.id}>
               <div className="bg-white transform transition duration-500 hover:scale-110">
                 <div className="py-8 px-9">
                   <p className="text-lg font-bold text-black">{course.title}</p>
@@ -45,7 +68,21 @@ export const Courses = () => {
                   </p>
                 </div>
               </div>
-            </Link>
+              {userIsAuthenticated ? (
+                <button
+                  onClick={() => {
+                    enrollInCourse(course.id);
+                    navigate(`/courses/${course.id}`);
+                  }}
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Enroll
+                </button>
+              ) : (
+                // Render something else if the user is not authenticated
+                <p className="mt-4 text-red-500">Please log in to enroll.</p>
+              )}
+            </div>
           ))}
         </div>
       </div>
