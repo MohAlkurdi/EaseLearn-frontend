@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../api";
+import { CertificateDetails } from "./CertificateDetails";
 
 interface Certificate {
   id: number;
+  unique_number: string;
   course: {
     title: string;
     description: string;
@@ -12,6 +14,8 @@ interface Certificate {
 
 const UserCertificates: React.FC = () => {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [selectedCertificate, setSelectedCertificate] =
+    useState<Certificate | null>(null);
 
   useEffect(() => {
     const fetchUserCertificates = async () => {
@@ -27,6 +31,14 @@ const UserCertificates: React.FC = () => {
 
     fetchUserCertificates();
   }, []);
+
+  const openCertificateDetails = (certificate: Certificate) => {
+    setSelectedCertificate(certificate);
+  };
+
+  const closeCertificateDetails = () => {
+    setSelectedCertificate(null);
+  };
 
   return (
     <div className="py-10 bg-gradient-to-r from-fuchsia-600 to-blue-600 sm:py-16 lg:py-24">
@@ -47,10 +59,23 @@ const UserCertificates: React.FC = () => {
                 {certificate.course.title}
               </h3>
               <p className="text-gray-600">{certificate.course.description}</p>
-              {/* You can add more details about the certificate here */}
+              <button
+                onClick={() => openCertificateDetails(certificate)}
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                View Certificate details
+              </button>
             </div>
           ))}
         </div>
+
+        {/* Render the certificate details modal */}
+        {selectedCertificate && (
+          <CertificateDetails
+            certificate={selectedCertificate}
+            onClose={closeCertificateDetails}
+          />
+        )}
       </div>
     </div>
   );
