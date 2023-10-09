@@ -5,10 +5,10 @@ import { CertificateDetails } from "./CertificateDetails";
 interface Certificate {
   id: number;
   unique_number: string;
+  created_at: string;
   course: {
-    title: string;
+    name: string;
     description: string;
-    // Add more properties as needed
   };
 }
 
@@ -56,8 +56,13 @@ const UserCertificates: React.FC = () => {
               className="bg-white p-4 shadow-lg rounded-lg mb-4"
             >
               <h3 className="text-xl font-semibold text-gray-800">
-                {certificate.course.title}
+                {certificate.course.name}
               </h3>
+              <div className="flex justify-end items-center">
+                <p className="text-gray-600 text-sm">
+                  {new Date(certificate.created_at).toLocaleDateString()}
+                </p>
+              </div>
               <p className="text-gray-600">{certificate.course.description}</p>
               <button
                 onClick={() => openCertificateDetails(certificate)}
