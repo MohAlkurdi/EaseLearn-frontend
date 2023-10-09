@@ -105,13 +105,19 @@ export const Layout = () => {
                 {user.isAuthenticated ? (
                   <>
                     <li className="text-gray-700">
-                      <p> {user.name} </p>
+                      <p> Username: {user.name} </p>
                     </li>
                     <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
 
                     <li className="text-gray-700 hover:text-indigo-600">
                       <Link to="/dashboard" className="block">
                         Dashboard
+                      </Link>
+                    </li>
+                    <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
+                    <li className="text-gray-700 hover:text-indigo-600">
+                      <Link to="/user/certificates" className="block">
+                        Certificate
                       </Link>
                     </li>
                     <span className="hidden w-px h-6 bg-gray-300 md:block"></span>

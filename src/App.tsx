@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
 import { CourseDetail } from "./components/CourseDetail";
 import { Auth } from "./components/Auth";
+import UserCertificates from "./components/UserCertificates";
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +30,15 @@ function App() {
             element={
               <Auth>
                 <CourseDetail />
+              </Auth>
+            }
+          />
+
+          <Route
+            path="/user/certificates"
+            element={
+              <Auth>
+                <UserCertificates />
               </Auth>
             }
           />
