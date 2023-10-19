@@ -9,6 +9,7 @@ export const Register = () => {
     email: "",
     password: "",
     password_confirmation: "",
+    member_id: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +94,17 @@ export const Register = () => {
               required
               onChange={handleInputChange}
               name="password_confirmation"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">Member id</label>
+            <input
+              type="text"
+              required
+              onChange={handleInputChange}
+              name="member_id"
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
             />
           </div>
